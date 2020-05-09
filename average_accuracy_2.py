@@ -33,14 +33,14 @@ def c(n, m, r):
 
 # Case M = 2
 m = 2
-n = 4*m
+N_max = 4*m     # Maximum number of people in the whole queue
 r = 4
 
 sum = 0
 
-for i in range(0, n+1):
-    sum += b(i)/c(i, m, r)
+for n in range(0, N_max+1):
+    sum += b(n)/c(n, m, r)
 
-av_accuracy = 1/(n+1) * sum
+av_accuracy = 1/(N_max+1) * sum
 
 print('The average accuracy in a', m, 'module system is: ', av_accuracy)
