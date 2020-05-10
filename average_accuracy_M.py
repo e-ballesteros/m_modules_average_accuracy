@@ -1,46 +1,30 @@
 #!/usr/bin/env python
 
 from math import factorial
-from numpy import prod
 
 # The rows represent the truth label and the columns the predicted label
 p_conf = [[1, 0,    0,    0,    0],
-         [0, 0.97, 0.03, 0,    0],
-         [0, 0.03, 0.96, 0.01, 0],
-         [0, 0,    0,    1,    0],
-         [0, 0,    0,    0.01, 0.99]]
+          [0, 0.97, 0.03, 0,    0],
+          [0, 0.03, 0.96, 0.01, 0],
+          [0, 0,    0,    1,    0],
+          [0, 0,    0,    0.01, 0.99]]
+
+b_res = 0                       # The result of the b term must be a global variable
 
 
 # Performs combinatorial of two numbers
 def comb(n, r):
     return factorial(n) // factorial(r) // factorial(n-r)
 
-# def add(value):
-#     global b_res
-#     b_res +=
 
-b_res = 0
-
+# Computation of b term in the average accuracy formula
 def b(n, m):
 
     global b_res
     b_res = 0
-    # i_start = []
-    # i_stop = []
-    #
-    # i_start.append(0)                       # Index 1 will be the first element in the list
-    # i_stop.append(0)                        # Index 1 will be the first element in the list
-    # i_start.append(max(0, n - 4*(m-1)))
-    #
-    # for k in range(1, m):
-    #     i_start.append(max(0, n - 4(m-k) - sum(i_start)))
-    #     i_stop.append(min(4, n - sum(i_start)))
-    #
-    # j_start = i_start
-    # j_stop = i_stop
 
-    indices_i = [0] * (m+1)    # The indices of the i nested loops. indices_i[0] is not used
-    indices_j = [0] * (m+1)    # The indices of the j nested loops. indices_j[0] is not used
+    indices_i = [0] * m     # The indices of the i nested loops. indices_i[0] is not used
+    indices_j = [0] * m     # The indices of the j nested loops. indices_j[0] is not used
 
     # Variable number of for loops using recursion
     def loop_rec(q):
@@ -57,7 +41,7 @@ def b(n, m):
             global b_res
             b_res += prod * p_conf[n-sum(indices_i[1:m])][n-sum(indices_j[1:m])]
 
-    loop_rec(m-1)
+    loop_rec(m-1)           # (m-1) is the number of summatories regarding one of the two indices i, j
 
     return b_res
 
@@ -70,10 +54,11 @@ def c(n, m, r):
     return c_res
 
 
-# Case variable M
-m = 7
-N_max = 4*m
-r = 4
+############################### Modify m to test with different number of modules #####################################
+m = 4           # Number of modules
+r = 4           # Maximum number of people inside a module
+N_max = r*m     # Maximum number of people in the queue
+#######################################################################################################################
 
 summation = 0
 
