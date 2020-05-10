@@ -23,6 +23,8 @@ b_res = 0
 
 def b(n, m):
 
+    global b_res
+    b_res = 0
     # i_start = []
     # i_stop = []
     #
@@ -37,23 +39,23 @@ def b(n, m):
     # j_start = i_start
     # j_stop = i_stop
 
-    indices_i = [0] * m    # The indices of the i nested loops. indices_i[0] is not used
-    indices_j = [0] * m    # The indices of the j nested loops. indices_j[0] is not used
+    indices_i = [0] * (m+1)    # The indices of the i nested loops. indices_i[0] is not used
+    indices_j = [0] * (m+1)    # The indices of the j nested loops. indices_j[0] is not used
 
     # Variable number of for loops using recursion
     def loop_rec(q):
         if q >= 1:
-            for i in range(max(0, n - 4*q - sum(indices_i[0:(m-q)])), min(4, n - sum(indices_i[0:m-q]))):
-                for j in range(max(0, n - 4*q - sum(indices_j[0:(m-q)])), min(4, n - sum(indices_j[0:m-q]))):
+            for i in range(max(0, n - 4*q - sum(indices_i[1:(m-q)])), min(4, n - sum(indices_i[1:m-q])) + 1):
+                for j in range(max(0, n - 4*q - sum(indices_j[1:(m-q)])), min(4, n - sum(indices_j[1:m-q])) + 1):
                     indices_i[m-q] = i
                     indices_j[m-q] = j
                     loop_rec(q - 1)
         else:
-            prod = 0
+            prod = 1
             for k in range(1, m):
                 prod *= p_conf[indices_i[k]][indices_j[k]]
             global b_res
-            b_res += prod * p_conf[N_max-sum(indices_i[1:m])][N_max-sum(indices_j[1:m])]
+            b_res += prod * p_conf[n-sum(indices_i[1:m])][n-sum(indices_j[1:m])]
 
     loop_rec(m-1)
 
@@ -69,7 +71,7 @@ def c(n, m, r):
 
 
 # Case variable M
-m = 4
+m = 7
 N_max = 4*m
 r = 4
 
